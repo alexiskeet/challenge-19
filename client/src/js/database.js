@@ -7,7 +7,8 @@ const initdb = async () =>
         console.log('jate database already exists');
         return;
       }
-      db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
+       const store = db.createObjectStore('jate', { keyPath: 'id'});
+        store.put({ id: 1, value: "Welcome to Jate!" });
       console.log('jate database created');
     },
   });
@@ -22,7 +23,7 @@ const tx = textDb.transaction('jate', 'readwrite');
 
 const store = tx.objectStore('jate');
 
-const request = store.put({ id: id, jate: content});
+const request = store.put({ id: 1, value: content});
 
 const result = await request;
 
@@ -39,11 +40,8 @@ const tx = textDb.transaction('jate', 'readonly');
 
 const store = tx.objectStore('jate');
 
-const request = store.getAll();
-
-const result = await request;
-console.log('result.value', result);
-return result;
+const request = await store.get(1);
+return request.value
 };
 
 initdb();
